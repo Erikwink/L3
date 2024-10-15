@@ -1,0 +1,4 @@
+{
+  "presets": ["@babel/preset-env"],
+  "plugins": [] // Ensure no plugins are removing console logs
+}

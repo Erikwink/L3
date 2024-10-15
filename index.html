@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Converter</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="./src/css/style.css" />
+    <!-- <script src="./src/js/index.js" type="module"></script> -->
+  </head>
+  <body>
+    <div class="converter-container">
+      <h1>Unit Converter</h1>
+      
+      <div id="slider-container">
+        <label class="switch">
+          <input type="checkbox" />
+          <span class="slider round"></span>
+        </label>
+      </div>
+      <div id="slider-h3-container">
+        <h3 id="slider-header">Convert</h3>
+      </div>
+      <!-- calculation page -->
+      <div id="calculation-history" hidden>
+        <h3>Previous Calculations</h3>
+        <ul id="history-list"></ul>
+      </div>
+      <!-- conversion page -->
+      <div id="conversion-form">
+      <div class="form-group">
+        <label for="value">Value to convert:</label>
+        <input type="number" id="value" placeholder="Enter value" />
+      </div>
+
+      <div class="form-group">
+        <label for="from-unit">From:</label>
+        <select id="from-unit">
+          <option value="">Select a unit</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="to-unit">To:</label>
+        <select id="to-unit">
+          <option value="">Select a unit</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="decimals">Decimals:</label>
+        <input type="number" id="decimals" value="2" />
+      </div>
+      <div class="toggle-btns">
+        <button id="toggle-calculation" class="toggle-btn">
+          Show Calculation
+        </button>
+      </div>
+
+      <button id="convert-btn" style="margin-top: 10px">Convert</button>
+
+      <div id="result">
+        <span id="converted-value"></span>
+      </div>
+    </div>
+    </div>
+    
+    <script src="./dist/bundle.js"></script>
+  </body>
+</html>
