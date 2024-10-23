@@ -1,5 +1,7 @@
 import { Converter } from 'unit-converter'
 import Swal from 'sweetalert2'
+// TODO: doubble submit convert?
+
 /**
  *
  */
@@ -53,7 +55,7 @@ export class UiManager {
    */
   bindEvents () {
     this.sliderInput.addEventListener('change', () => this.toggleView())
-    this.calculationBtn.addEventListener('click', () => this.toggelCalculation())
+    this.calculationBtn.addEventListener('click', () => this.toggleCalculation())
     this.clearHistoryBtn.addEventListener('click', () => this.clearHistory())
     this.convertBtn.addEventListener('click', () => this.convertUnits())
   }
@@ -77,7 +79,7 @@ export class UiManager {
   /**
    *
    */
-  toggelCalculation () {
+  toggleCalculation () {
     console.log('Toggle Calculation')
     this.showCalculation = !this.showCalculation
     this.calculationBtn.textContent = this.showCalculation ? 'Hide Calculation' : 'Show Calculation'
@@ -102,38 +104,75 @@ export class UiManager {
 
   /**
    *
+   * @param value
+   * @param fromUnit
+   * @param toUnit
    */
-  convertUnits () {
-    const value = parseFloat(this.valueInput.value)
-    const fromUnit = this.fromUnitInput.value
-    const toUnit = this.toUnitInput.value
-    const decimals = parseInt(this.decimalsInput.value)
-
+  #validateInput (value, fromUnit, toUnit) {
     if (!value || !fromUnit || !toUnit) {
       this.displayError('Please fill in all fields!')
+      return false
+    } else {
+      return true
+    }
+  }
+
+  /**
+   *
+   */
+  #getConversionInput () {
+    return {
+      value: parseFloat(this.valueInput.value),
+      fromUnit: this.fromUnitInput.value,
+      toUnit: this.toUnitInput.value,
+      decimals: parseInt(this.decimalsInput.value)
+    }
+  }
+
+  /**
+   *
+   */
+  convertUnits () {
+    const { value, fromUnit, toUnit, decimals } = this.#getConversionInput()
+
+    if (!this.#validateInput(value, fromUnit, toUnit)) {
       return
     }
 
     this.converter.setValue(value)
     this.converter.setDecimals(decimals)
+    const calculation = this.converter.convertToCalc(fromUnit, toUnit)
+    console.log(this.showCalculation)
 
     try {
       const result = this.showCalculation
-        ? this.converter.convertToCalc(fromUnit, toUnit)
+        ? calculation
         : this.converter.convertToString(fromUnit, toUnit)
 
-      this.convertedValueDisplay.textContent = result
-      this.saveCalculation(this.converter.convertToCalc(fromUnit, toUnit))
+      this.#displayResult(result)
+      this.saveCalculation(calculation)
     } catch (error) {
       this.displayError(error.message)
     }
   }
 
-  displayError(error) {
+  /**
+   *
+   * @param result
+   */
+  #displayResult (result) {
+    this.convertedValueDisplay.textContent = result
+  }
+
+  /**
+   *
+   * @param errorMessage
+   */
+  displayError (errorMessage) {
     Swal.fire({
       icon: 'error',
       title: 'Error...',
-      text: error,
+      text: errorMessage,
       footer: 'Please try again'
     })
   }
@@ -165,7 +204,29 @@ export class UiManager {
    *
    */
   clearHistory () {
-    localStorage.removeItem('calculations')
-    this.historyList.innerHTML = ''
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You will not be able to recover this history!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, clear it!',
+      cancelButtonText: 'No, keep it'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        localStorage.removeItem('calculations')
+        this.historyList.innerHTML = ''
+        Swal.fire(
+          'Cleared!',
+          'Your history has been cleared.',
+          'success'
+        )
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        Swal.fire(
+          'Cancelled',
+          'Your history is safe :)',
+          'error'
+        )
+      }
+    })
   }
 }
