@@ -1,5 +1,5 @@
 import { Converter } from 'unit-converter'
-import { HistoryManager } from './HistoryManager.js'
+import { StorageManager } from './StorageManager.js'
 import Swal from 'sweetalert2'
 
 /**
@@ -12,7 +12,7 @@ export class UiManager {
    */
   constructor () {
     this.converter = new Converter()
-    this.historyManager = new HistoryManager()
+    this.storageManager = new StorageManager('calculations_unit_converter')
     this.showCalculation = false
   }
 
@@ -43,6 +43,7 @@ export class UiManager {
     this.fromUnitInput = document.getElementById('from-unit')
     this.toUnitInput = document.getElementById('to-unit')
     this.decimalsInput = document.getElementById('decimals')
+    this.historyList = document.getElementById('history-list')
   }
 
   /**
@@ -51,8 +52,28 @@ export class UiManager {
   bindEvents () {
     this.sliderInput.addEventListener('change', () => this.toggleView())
     this.calculationBtn.addEventListener('click', () => this.isCalculationShown())
-    this.clearHistoryBtn.addEventListener('click', () => this.historyManager.clearHistory())
+    this.clearHistoryBtn.addEventListener('click', () => {
+      this.storageManager.clear()
+      this.clearHistoryList()
+    })
     this.convertBtn.addEventListener('click', () => this.convertUnits())
+  }
+
+  /**
+   *
+   */
+  populateUnits () {
+    const unitMap = this.converter.getUnits()
+    for (const type in unitMap) {
+      unitMap[type].forEach(unit => {
+        const option1 = document.createElement('option')
+        option1.value = unit
+        option1.textContent = `${unit} (${type})`
+        const option2 = option1.cloneNode(true)
+        this.fromSelect.appendChild(option1)
+        this.toSelect.appendChild(option2)
+      })
+    }
   }
 
   /**
@@ -73,7 +94,7 @@ export class UiManager {
     this.sliderHeader.textContent = 'Previous Calculations'
     this.conversionForm.style.display = 'none'
     this.calculationHistory.style.display = 'block'
-    this.historyManager.appendToHistoryList()
+    this.appendToHistoryList()
   }
 
   /**
@@ -93,22 +114,7 @@ export class UiManager {
     this.calculationBtn.textContent = this.showCalculation ? 'Hide Calculation' : 'Show Calculation'
   }
 
-  /**
-   *
-   */
-  populateUnits () {
-    const unitMap = this.converter.getUnits()
-    for (const type in unitMap) {
-      unitMap[type].forEach(unit => {
-        const option1 = document.createElement('option')
-        option1.value = unit
-        option1.textContent = `${unit} (${type})`
-        const option2 = option1.cloneNode(true)
-        this.fromSelect.appendChild(option1)
-        this.toSelect.appendChild(option2)
-      })
-    }
-  }
+  
 
   /**
    *
@@ -157,11 +163,29 @@ export class UiManager {
         : this.converter.convertToString(fromUnit, toUnit)
 
       this.#displayResult(result)
-      this.historyManager.saveToLocalstorage(calculation)
+      this.storageManager.save(calculation)
     } catch (error) {
       this.displayError(error.message)
     }
   }
+
+  appendToHistoryList () {
+    const calculations = this.storageManager.getItems()
+    this.historyList.innerHTML = ''
+    calculations.forEach(calc => {
+      const li = document.createElement('li')
+      li.textContent = calc
+      li.innerHTML = calc.replace(/\n/g, '<br>')
+      this.historyList.appendChild(li)
+    })
+  }
+
+    /**
+   *
+   */
+    clearHistoryList () {
+      this.historyList.textContent = ''
+    }
 
   /**
    *
