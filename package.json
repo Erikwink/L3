@@ -18,6 +18,7 @@
   "author": "Erik Wink",
   "license": "MIT",
   "dependencies": {
+    "sweetalert2": "^11.14.4",
     "unit-converter": "github:Erikwink/unit-converter"
   },
   "devDependencies": {
