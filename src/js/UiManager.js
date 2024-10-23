@@ -152,9 +152,9 @@ export class UiManager {
 
     this.converter.setValue(value)
     this.converter.setDecimals(decimals)
-    const calculation = this.converter.convertToCalc(fromUnit, toUnit)
 
     try {
+      const calculation = this.converter.convertToCalc(fromUnit, toUnit)
       const result = this.showCalculation
         ? calculation
         : this.converter.convertToString(fromUnit, toUnit)
@@ -210,6 +210,7 @@ export class UiManager {
     calculations.forEach(calc => {
       const li = document.createElement('li')
       li.textContent = calc
+      li.innerHTML = calc.replace(/\n/g, '<br>')
       this.historyList.appendChild(li)
     })
   }
@@ -233,12 +234,6 @@ export class UiManager {
           'Cleared!',
           'Your history has been cleared.',
           'success'
-        )
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
-        Swal.fire(
-          'Cancelled',
-          'Your history is safe :)',
-          'error'
         )
       }
     })
