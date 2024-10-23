@@ -1,4 +1,5 @@
 import { Converter } from 'unit-converter'
+import { HistoryManager } from './HistoryManager.js'
 import Swal from 'sweetalert2'
 
 /**
@@ -11,8 +12,8 @@ export class UiManager {
    */
   constructor () {
     this.converter = new Converter()
+    this.historyManager = new HistoryManager()
     this.showCalculation = false
-    this.initialize()
   }
 
   /**
@@ -36,16 +37,12 @@ export class UiManager {
     this.calculationHistory = document.getElementById('calculation-history')
     this.calculationBtn = document.getElementById('toggle-calculation')
     this.clearHistoryBtn = document.getElementById('clear-history')
-    this.historyList = document.getElementById('history-list')
     this.convertBtn = document.getElementById('convert-btn')
     this.convertedValueDisplay = document.getElementById('converted-value')
     this.valueInput = document.getElementById('value')
     this.fromUnitInput = document.getElementById('from-unit')
     this.toUnitInput = document.getElementById('to-unit')
     this.decimalsInput = document.getElementById('decimals')
-    this.errorPage = document.getElementById('error-page')
-    this.errorHeader = document.getElementById('error-header')
-    this.errorText = document.getElementById('error-text')
   }
 
   /**
@@ -53,8 +50,8 @@ export class UiManager {
    */
   bindEvents () {
     this.sliderInput.addEventListener('change', () => this.toggleView())
-    this.calculationBtn.addEventListener('click', () => this.toggleCalculation())
-    this.clearHistoryBtn.addEventListener('click', () => this.clearHistory())
+    this.calculationBtn.addEventListener('click', () => this.isCalculationShown())
+    this.clearHistoryBtn.addEventListener('click', () => this.historyManager.clearHistory())
     this.convertBtn.addEventListener('click', () => this.convertUnits())
   }
 
@@ -76,7 +73,7 @@ export class UiManager {
     this.sliderHeader.textContent = 'Previous Calculations'
     this.conversionForm.style.display = 'none'
     this.calculationHistory.style.display = 'block'
-    this.showHistory()
+    this.historyManager.appendToHistoryList()
   }
 
   /**
@@ -91,7 +88,7 @@ export class UiManager {
   /**
    *
    */
-  toggleCalculation () {
+  isCalculationShown () {
     this.showCalculation = !this.showCalculation
     this.calculationBtn.textContent = this.showCalculation ? 'Hide Calculation' : 'Show Calculation'
   }
@@ -160,7 +157,7 @@ export class UiManager {
         : this.converter.convertToString(fromUnit, toUnit)
 
       this.#displayResult(result)
-      this.saveCalculation(calculation)
+      this.historyManager.saveToLocalstorage(calculation)
     } catch (error) {
       this.displayError(error.message)
     }
@@ -184,58 +181,6 @@ export class UiManager {
       title: 'Error...',
       text: errorMessage,
       footer: 'Please try again'
-    })
-  }
-
-  /**
-   *
-   * @param calculation
-   */
-  saveCalculation (calculation) {
-    const calculations = JSON.parse(localStorage.getItem('calculations')) || []
-    const lastCalulation = calculations[calculations.length - 1]
-    if (calculation === lastCalulation) {
-      return
-    }
-    calculations.push(calculation)
-    localStorage.setItem('calculations', JSON.stringify(calculations))
-  }
-
-  /**
-   *
-   */
-  showHistory () {
-    const calculations = JSON.parse(localStorage.getItem('calculations')) || []
-    this.historyList.innerHTML = ''
-    calculations.forEach(calc => {
-      const li = document.createElement('li')
-      li.textContent = calc
-      li.innerHTML = calc.replace(/\n/g, '<br>')
-      this.historyList.appendChild(li)
-    })
-  }
-
-  /**
-   *
-   */
-  clearHistory () {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: 'You will not be able to recover this history!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Yes, clear it!',
-      cancelButtonText: 'No, keep it'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        localStorage.removeItem('calculations')
-        this.historyList.innerHTML = ''
-        Swal.fire(
-          'Cleared!',
-          'Your history has been cleared.',
-          'success'
-        )
-      }
     })
   }
 }
