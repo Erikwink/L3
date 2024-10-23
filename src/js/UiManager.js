@@ -1,6 +1,5 @@
 import { Converter } from 'unit-converter'
 import Swal from 'sweetalert2'
-// TODO: doubble submit convert?
 
 /**
  *
@@ -29,7 +28,6 @@ export class UiManager {
    *
    */
   cacheDOM () {
-    console.log('Cache DOM')
     this.fromSelect = document.getElementById('from-unit')
     this.toSelect = document.getElementById('to-unit')
     this.sliderInput = document.querySelector('.switch input')
@@ -65,22 +63,35 @@ export class UiManager {
    */
   toggleView () {
     if (this.sliderInput.checked) {
-      this.sliderHeader.textContent = 'Previous Calculations'
-      this.conversionForm.style.display = 'none'
-      this.calculationHistory.style.display = 'block'
-      this.showHistory()
+      this.#showHistoryPage()
     } else {
-      this.sliderHeader.textContent = 'Convert'
-      this.conversionForm.style.display = 'block'
-      this.calculationHistory.style.display = 'none'
+      this.#showCalculationPage()
     }
   }
 
   /**
    *
    */
+  #showHistoryPage () {
+    this.sliderHeader.textContent = 'Previous Calculations'
+    this.conversionForm.style.display = 'none'
+    this.calculationHistory.style.display = 'block'
+    this.showHistory()
+  }
+
+  /**
+   *
+   */
+  #showCalculationPage () {
+    this.sliderHeader.textContent = 'Convert'
+    this.conversionForm.style.display = 'block'
+    this.calculationHistory.style.display = 'none'
+  }
+
+  /**
+   *
+   */
   toggleCalculation () {
-    console.log('Toggle Calculation')
     this.showCalculation = !this.showCalculation
     this.calculationBtn.textContent = this.showCalculation ? 'Hide Calculation' : 'Show Calculation'
   }
@@ -142,7 +153,6 @@ export class UiManager {
     this.converter.setValue(value)
     this.converter.setDecimals(decimals)
     const calculation = this.converter.convertToCalc(fromUnit, toUnit)
-    console.log(this.showCalculation)
 
     try {
       const result = this.showCalculation
@@ -183,6 +193,10 @@ export class UiManager {
    */
   saveCalculation (calculation) {
     const calculations = JSON.parse(localStorage.getItem('calculations')) || []
+    const lastCalulation = calculations[calculations.length - 1]
+    if (calculation === lastCalulation) {
+      return
+    }
     calculations.push(calculation)
     localStorage.setItem('calculations', JSON.stringify(calculations))
   }
