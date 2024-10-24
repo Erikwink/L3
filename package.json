@@ -9,7 +9,7 @@
     "start": "node ./src/js/index.js",
     "lint": "npx eslint ./src || exit 0",
     "lint:fix": "npx eslint ./src --fix || exit 0",
-    "build": "webpack"
+    "build": "webpack --mode production"
   },
   "keywords": [
     "conversion",
