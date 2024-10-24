@@ -11,8 +11,6 @@ export class UiManager {
    * @param converter
    */
   constructor () {
-    this.converter = new Converter()
-    this.storageManager = new StorageManager('calculations_unit_converter')
     this.showCalculation = false
   }
 
@@ -22,7 +20,6 @@ export class UiManager {
   initialize () {
     this.cacheDOM()
     this.bindEvents()
-    this.populateUnits()
   }
 
   /**
@@ -50,20 +47,19 @@ export class UiManager {
    *
    */
   bindEvents () {
-    this.sliderInput.addEventListener('change', () => this.toggleView())
-    this.calculationBtn.addEventListener('click', () => this.isCalculationShown())
-    this.clearHistoryBtn.addEventListener('click', () => {
+    /* this.sliderInput.addEventListener('change', () => this.toggleView()) */
+   /*  this.calculationBtn.addEventListener('click', () => this.showCalculationStateText()) */
+    /* this.clearHistoryBtn.addEventListener('click', () => {
       this.storageManager.clear()
       this.clearHistoryList()
-    })
-    this.convertBtn.addEventListener('click', () => this.convertUnits())
+    }) */
+    // this.convertBtn.addEventListener('click', () => this.convertUnits())
   }
 
   /**
    *
    */
-  populateUnits () {
-    const unitMap = this.converter.getUnits()
+  populateUnits (unitMap) {
     for (const type in unitMap) {
       unitMap[type].forEach(unit => {
         const option1 = document.createElement('option')
@@ -80,27 +76,29 @@ export class UiManager {
    *
    */
   toggleView () {
-    if (this.sliderInput.checked) {
-      this.#showHistoryPage()
+    console.log('toggleView from UiManager')
+    /* if (this.sliderInput.checked) {
+      this.showHistoryPage()
     } else {
-      this.#showCalculationPage()
-    }
+      this.showCalculationPage()
+    } */
   }
 
+  
   /**
    *
    */
-  #showHistoryPage () {
+  showHistoryPage () {
     this.sliderHeader.textContent = 'Previous Calculations'
     this.conversionForm.style.display = 'none'
     this.calculationHistory.style.display = 'block'
-    this.appendToHistoryList()
+    /* this.appendToHistoryList() do from controller */
   }
 
   /**
    *
    */
-  #showCalculationPage () {
+  showCalculationPage () {
     this.sliderHeader.textContent = 'Convert'
     this.conversionForm.style.display = 'block'
     this.calculationHistory.style.display = 'none'
@@ -109,32 +107,21 @@ export class UiManager {
   /**
    *
    */
-  isCalculationShown () {
-    this.showCalculation = !this.showCalculation
-    this.calculationBtn.textContent = this.showCalculation ? 'Hide Calculation' : 'Show Calculation'
-  }
-
-  
-
-  /**
-   *
-   * @param value
-   * @param fromUnit
-   * @param toUnit
-   */
-  #validateInput (value, fromUnit, toUnit) {
-    if (!value || !fromUnit || !toUnit) {
-      this.displayError('Please fill in all fields!')
-      return false
-    } else {
-      return true
-    }
+  showCalculationStateText (boolean) {
+    this.calculationBtn.textContent = boolean ? 'Hide Calculation' : 'Show Calculation'
   }
 
   /**
    *
    */
-  #getConversionInput () {
+  get callculationState () {
+    return this.showCalculation
+  }
+
+  /**
+   *
+   */
+  getConversionInput () {
     return {
       value: parseFloat(this.valueInput.value),
       fromUnit: this.fromUnitInput.value,
@@ -146,12 +133,8 @@ export class UiManager {
   /**
    *
    */
-  convertUnits () {
-    const { value, fromUnit, toUnit, decimals } = this.#getConversionInput()
-
-    if (!this.#validateInput(value, fromUnit, toUnit)) {
-      return
-    }
+  /* convertUnits () {
+    const { value, fromUnit, toUnit, decimals } = this.getConversionInput()
 
     this.converter.setValue(value)
     this.converter.setDecimals(decimals)
@@ -162,15 +145,18 @@ export class UiManager {
         ? calculation
         : this.converter.convertToString(fromUnit, toUnit)
 
-      this.#displayResult(result)
+      this.displayResult(result)
       this.storageManager.save(calculation)
     } catch (error) {
       this.displayError(error.message)
     }
-  }
+  } */
 
-  appendToHistoryList () {
-    const calculations = this.storageManager.getItems()
+  /**
+   *
+   */
+  appendToHistoryList (calculations) {
+    /* const calculations = this.storageManager.getItems() */
     this.historyList.innerHTML = ''
     calculations.forEach(calc => {
       const li = document.createElement('li')
@@ -180,18 +166,18 @@ export class UiManager {
     })
   }
 
-    /**
+  /**
    *
    */
-    clearHistoryList () {
-      this.historyList.textContent = ''
-    }
+  clearHistoryList () {
+    this.historyList.textContent = ''
+  }
 
   /**
    *
    * @param result
    */
-  #displayResult (result) {
+  displayResult (result) {
     this.convertedValueDisplay.textContent = result
   }
 
