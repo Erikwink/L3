@@ -1,29 +1,12 @@
-import { Converter } from 'unit-converter'
-import { StorageManager } from './StorageManager.js'
-import Swal from 'sweetalert2'
-
-/**
- *
- */
 export class UiManager {
-  /**
-   *
-   * @param converter
-   */
-  constructor () {
-  }
-
-  /**
-   *
-   */
   initialize () {
-    this.cacheDOM()
+    this.#cacheDOM()
   }
 
   /**
    *
    */
-  cacheDOM () {
+  #cacheDOM () {
     this.fromSelect = document.getElementById('from-unit')
     this.toSelect = document.getElementById('to-unit')
     this.sliderInput = document.querySelector('.switch input')
@@ -45,7 +28,7 @@ export class UiManager {
    *
    * @param unitMap
    */
-  populateUnits (unitMap) {
+  /* fillDropdowns (unitMap) {
     for (const type in unitMap) {
       unitMap[type].forEach(unit => {
         const option1 = this.createOptionElement(unit, type)
@@ -54,18 +37,35 @@ export class UiManager {
         this.toSelect.appendChild(option2)
       })
     }
-  }
+  } */
+    fillDropdowns(unitMap) {
+      this.#clearSelectOptions(this.fromSelect);
+    this.#clearSelectOptions(this.toSelect);
+    
+      for (const type in unitMap) {
+        const optgroup = document.createElement('optgroup')
+        optgroup.label = type
+        unitMap[type].forEach(unit => {
+          const option = this.#createOptionElement(unit)
+          optgroup.appendChild(option)
+        })
+        this.fromSelect.appendChild(optgroup.cloneNode(true))
+        this.toSelect.appendChild(optgroup)
+      }
+    }
+    
 
-  /**
-   *
-   * @param unit
-   * @param type
-   */
-  createOptionElement (unit, type) {
+  #createOptionElement (unit) {
     const option = document.createElement('option')
     option.value = unit
-    option.textContent = `${unit} (${type})`
+    option.textContent = `${unit}`
     return option
+  }
+
+  #clearSelectOptions(selectElement) {
+    while (selectElement.firstChild) {
+      selectElement.removeChild(selectElement.firstChild);
+    }
   }
 
   /**
@@ -90,7 +90,7 @@ export class UiManager {
    *
    * @param boolean
    */
-  showCalculationStateText (boolean) {
+  updateCalculationBtnText (boolean) {
     this.calculationBtn.textContent = boolean ? 'Hide Calculation' : 'Show Calculation'
   }
 

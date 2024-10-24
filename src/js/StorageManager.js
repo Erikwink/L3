@@ -20,20 +20,24 @@ export class StorageManager {
     }
   }
 
+  hasItems () {
+    return this.getItems().length > 0
+  }
+
   /** Saves an item to local storage.
    *
    * @param item The item to save to local storage.
    */
   save (item) {
     const items = this.getItems()
-    const lastItem = this.getLastSavedItem(items)
+    const lastItem = this.#getLastSavedItem(items)
     if (this.#isDuplicate(item, lastItem)) {
       items.push(item)
       localStorage.setItem(this.keyForLocalStorage, JSON.stringify(items))
     }
   }
 
-  getLastSavedItem (items) {
+  #getLastSavedItem (items) {
     return items[items.length - 1]
   }
 
@@ -44,30 +48,7 @@ export class StorageManager {
     return JSON.parse(localStorage.getItem(this.keyForLocalStorage)) || []
   }
 
-  /** Clears all items from local storage.
-   *
-   */
-  async clear () {
-    try {
-      if (!this.getItems().length) {
-        this.alertManager.NoDataToClear()
-        return false
-      } else {
-        const boolean = await this.alertManager.clearDataOptions()
-        console.log(boolean)
-        if (boolean) {
-          this.#clearLocalStorage()
-          return true
-        } else {
-          return false
-        }
-      }
-    } catch (error) {
-      this.alertManager.Error(error)
-    }
-  }
-
-  #clearLocalStorage () {
+  clearLocalStorage () {
     localStorage.removeItem(this.keyForLocalStorage)
   }
 }

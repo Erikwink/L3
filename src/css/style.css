@@ -86,7 +86,10 @@ button:active,
 button:hover {
   background-color: #0056b3;
 }
-
+#clear-history {
+  background-color: #dc3545;
+  margin-top: 10px;
+}
 #result {
   margin-top: 20px;
   text-align: center;
@@ -108,7 +111,7 @@ button:hover {
 .toggle-btns button {
   width: 48%;
 }
-
+/* History List */
 #history-list li {
   border: 1px solid black;
   border-radius: 5px;
@@ -169,23 +172,17 @@ button:hover {
   text-align: center;
   height: 50px;
 }
-
-/* The switch - the box around the slider */
 .switch {
   position: relative;
   display: inline-block;
   width: 60px;
   height: 34px;
 }
-
-/* Hide default HTML checkbox */
 .switch input {
   opacity: 0;
   width: 0;
   height: 0;
 }
-
-/* The slider */
 .slider {
   position: absolute;
   cursor: pointer;
@@ -196,7 +193,6 @@ button:hover {
   background-color: #2196F3;
   transition: .4s;
 }
-
 .slider:before {
   position: absolute;
   content: "";
@@ -207,28 +203,23 @@ button:hover {
   background-color: white;
   transition: .4s;
 }
-
 input:checked+.slider {
-  background-color: #749c75;
+  background-color: #134880;
 
 }
-
 input:focus+.slider {
   box-shadow: 0 0 1px #2196F3;
 }
-
 input:checked+.slider:before {
   transform: translateX(26px);
 }
-
-/* Rounded sliders */
 .slider.round {
   border-radius: 34px;
 }
-
 .slider.round:before {
   border-radius: 50%;
 }
+/* Footer */
 footer {
   position: fixed;
   left: 0;
@@ -239,7 +230,7 @@ footer {
   text-align: left;
   padding-left: 20px;
 }
-
+/* Media Queries */
 @media (min-width: 768px) {
   body {
     padding: 20px;

@@ -22,9 +22,10 @@
       </div>
       <!-- calculation page -->
       <div id="calculation-history" hidden>
-        <button id="clear-history">Clear History</button>
+        
         <ul id="history-list">
         </ul>
+        <button id="clear-history">Clear History</button>
       </div>
       <!-- conversion page -->
       <div id="conversion-form">
@@ -49,7 +50,7 @@
 
       <div class="form-group">
         <label for="decimals">Decimals:</label>
-        <input type="number" id="decimals" value="2" />
+        <input type="number" id="decimals" value="2" min="0" max="25" />
       </div>
       <div class="toggle-btns">
         <button id="toggle-calculation" class="toggle-btn">
