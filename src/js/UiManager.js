@@ -11,7 +11,6 @@ export class UiManager {
    * @param converter
    */
   constructor () {
-    this.showCalculation = false
   }
 
   /**
@@ -19,7 +18,6 @@ export class UiManager {
    */
   initialize () {
     this.cacheDOM()
-    this.bindEvents()
   }
 
   /**
@@ -45,26 +43,12 @@ export class UiManager {
 
   /**
    *
-   */
-  bindEvents () {
-    /* this.sliderInput.addEventListener('change', () => this.toggleView()) */
-   /*  this.calculationBtn.addEventListener('click', () => this.showCalculationStateText()) */
-    /* this.clearHistoryBtn.addEventListener('click', () => {
-      this.storageManager.clear()
-      this.clearHistoryList()
-    }) */
-    // this.convertBtn.addEventListener('click', () => this.convertUnits())
-  }
-
-  /**
-   *
+   * @param unitMap
    */
   populateUnits (unitMap) {
     for (const type in unitMap) {
       unitMap[type].forEach(unit => {
-        const option1 = document.createElement('option')
-        option1.value = unit
-        option1.textContent = `${unit} (${type})`
+        const option1 = this.createOptionElement(unit, type)
         const option2 = option1.cloneNode(true)
         this.fromSelect.appendChild(option1)
         this.toSelect.appendChild(option2)
@@ -74,17 +58,16 @@ export class UiManager {
 
   /**
    *
+   * @param unit
+   * @param type
    */
-  toggleView () {
-    console.log('toggleView from UiManager')
-    /* if (this.sliderInput.checked) {
-      this.showHistoryPage()
-    } else {
-      this.showCalculationPage()
-    } */
+  createOptionElement (unit, type) {
+    const option = document.createElement('option')
+    option.value = unit
+    option.textContent = `${unit} (${type})`
+    return option
   }
 
-  
   /**
    *
    */
@@ -92,7 +75,6 @@ export class UiManager {
     this.sliderHeader.textContent = 'Previous Calculations'
     this.conversionForm.style.display = 'none'
     this.calculationHistory.style.display = 'block'
-    /* this.appendToHistoryList() do from controller */
   }
 
   /**
@@ -106,16 +88,10 @@ export class UiManager {
 
   /**
    *
+   * @param boolean
    */
   showCalculationStateText (boolean) {
     this.calculationBtn.textContent = boolean ? 'Hide Calculation' : 'Show Calculation'
-  }
-
-  /**
-   *
-   */
-  get callculationState () {
-    return this.showCalculation
   }
 
   /**
@@ -132,28 +108,7 @@ export class UiManager {
 
   /**
    *
-   */
-  /* convertUnits () {
-    const { value, fromUnit, toUnit, decimals } = this.getConversionInput()
-
-    this.converter.setValue(value)
-    this.converter.setDecimals(decimals)
-
-    try {
-      const calculation = this.converter.convertToCalc(fromUnit, toUnit)
-      const result = this.showCalculation
-        ? calculation
-        : this.converter.convertToString(fromUnit, toUnit)
-
-      this.displayResult(result)
-      this.storageManager.save(calculation)
-    } catch (error) {
-      this.displayError(error.message)
-    }
-  } */
-
-  /**
-   *
+   * @param calculations
    */
   appendToHistoryList (calculations) {
     /* const calculations = this.storageManager.getItems() */
@@ -179,18 +134,5 @@ export class UiManager {
    */
   displayResult (result) {
     this.convertedValueDisplay.textContent = result
-  }
-
-  /**
-   *
-   * @param errorMessage
-   */
-  displayError (errorMessage) {
-    Swal.fire({
-      icon: 'error',
-      title: 'Error...',
-      text: errorMessage,
-      footer: 'Please try again'
-    })
   }
 }

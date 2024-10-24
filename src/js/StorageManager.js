@@ -3,11 +3,13 @@
 /* eslint-disable jsdoc/check-param-names */
 /* eslint-disable jsdoc/require-param-description */
 /* eslint-disable jsdoc/require-param-type */
-import Swal from 'sweetalert2'
+// import Swal from 'sweetalert2'
+import { AlertManager } from './AlertManager.js'
 
 export class StorageManager {
   constructor (storageKey) {
     this.keyForLocalStorage = storageKey
+    this.alertManager = new AlertManager()
   }
 
   #isDuplicate (newItem, oldItem) {
@@ -45,31 +47,23 @@ export class StorageManager {
   /** Clears all items from local storage.
    *
    */
-  clear () {
-    if (!this.getItems().length) {
-      Swal.fire({
-        icon: 'info',
-        title: 'Oops...',
-        text: 'There is no data to clear!'
-      })
-    } else {
-      Swal.fire({
-        title: 'Are you sure?',
-        text: 'You will not be able to recover the data!',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Yes, clear it!',
-        cancelButtonText: 'No, keep it'
-      }).then((result) => {
-        if (result.isConfirmed) {
+  async clear () {
+    try {
+      if (!this.getItems().length) {
+        this.alertManager.NoDataToClear()
+        return false
+      } else {
+        const boolean = await this.alertManager.clearDataOptions()
+        console.log(boolean)
+        if (boolean) {
           this.#clearLocalStorage()
-          Swal.fire(
-            'Cleared!',
-            'Your data has been cleared.',
-            'success'
-          )
+          return true
+        } else {
+          return false
         }
-      })
+      }
+    } catch (error) {
+      this.alertManager.Error(error)
     }
   }
 

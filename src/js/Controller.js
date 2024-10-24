@@ -1,7 +1,7 @@
 import { Converter } from 'unit-converter'
 import { StorageManager } from './StorageManager.js'
 import { UiManager } from './UiManager.js'
-import Swal from 'sweetalert2'
+import { AlertManager } from './AlertManager.js'
 
 /**
  *
@@ -11,6 +11,7 @@ export class Controller {
    *
    */
   constructor () {
+    this.alertManager = new AlertManager()
     this.storageManager = new StorageManager('calculations_unit_converter')
     this.uiManager = new UiManager()
     this.converter = new Converter()
@@ -90,22 +91,28 @@ export class Controller {
       this.converter.setValue(value)
 
       const calculation = this.converter.convertToCalc(fromUnit, toUnit)
-      const result = this.uiManager.callculationState
+      const result = this.showCalculation
         ? calculation
         : this.converter.convertToString(fromUnit, toUnit)
 
       this.uiManager.displayResult(result)
       this.storageManager.save(calculation)
     } catch (error) {
-      this.uiManager.displayError(error.message)
+      this.alertManager.Error(error.message)
     }
   }
 
   /**
    *
    */
-  handleClearHistory () {
-    this.storageManager.clear()
-    this.uiManager.clearHistoryList()
+  async handleClearHistory () {
+    try {
+      const boolean = await this.storageManager.clear()
+      if (boolean) {
+        this.uiManager.clearHistoryList()
+      }
+    } catch (error) {
+      this.alertManager.Error(error.message)
+    }
   }
 }
