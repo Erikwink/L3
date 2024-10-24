@@ -1,5 +1,6 @@
 import { fileURLToPath } from 'url'
 import path from 'path'
+import HtmlWebpackPlugin from 'html-webpack-plugin';
 
 // Convert __dirname equivalent for ES modules
 const __filename = fileURLToPath(import.meta.url)
@@ -23,5 +24,11 @@ export default {
         }
       }
     ]
-  }
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './index.html', // Path to your source index.html file
+      filename: 'index.html' // Output file name in the dist directory
+    })
+  ]
 }
