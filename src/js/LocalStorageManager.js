@@ -1,15 +1,8 @@
-/* eslint-disable jsdoc/require-returns */
-/* eslint-disable jsdoc/require-jsdoc */
-/* eslint-disable jsdoc/check-param-names */
-/* eslint-disable jsdoc/require-param-description */
-/* eslint-disable jsdoc/require-param-type */
-// import Swal from 'sweetalert2'
-import { AlertManager } from './AlertManager.js'
+/* eslint-disable */
 
-export class StorageManager {
+export class LocalStorageManager {
   constructor (storageKey) {
     this.keyForLocalStorage = storageKey
-    this.alertManager = new AlertManager()
   }
 
   #isDuplicate (newItem, oldItem) {
@@ -24,10 +17,6 @@ export class StorageManager {
     return this.getItems().length > 0
   }
 
-  /** Saves an item to local storage.
-   *
-   * @param item The item to save to local storage.
-   */
   save (item) {
     const items = this.getItems()
     const lastItem = this.#getLastSavedItem(items)
@@ -41,9 +30,6 @@ export class StorageManager {
     return items[items.length - 1]
   }
 
-  /** Gets all items from local storage.
-   *
-   */
   getItems () {
     return JSON.parse(localStorage.getItem(this.keyForLocalStorage)) || []
   }

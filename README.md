@@ -1,92 +1,51 @@
-# L3
-App for L3
-## Requirements
+# Unit converter
+Are you driving in a foregin country?<br>
+Are you baking a recepie that has the wrong weight messurments?
 
-### Functional 
-#### 1. Conversion
-The app must convert different units. Weight (e.g., grams to pounds), Speed (e.g., km/h to mph), and Temperature (e.g., Celsius to Fahrenheit).
+**Meet Unit Converter**: A web application designed to provide quick, accurate, and reliable unit conversions for various measurements such as weight, speed, and temperature.<br>
+[Unit-Converter](https://converter-for-l3.netlify.app/)
+![Unit Converter](./img/unit-converter.png)
 
-#### 2. Input validation
-The app must validate the input, ensuring only numeric values are accepted.
-An error message must be displayed if the user tries to convert between incompatible units (e.g., weight to speed).
+## Vision
+Our vision is to empower users globally by providing a user-friendly, accessible, and comprehensive unit conversion tool that adapts to their needs, ensuring accuracy in every conversion. The application aims to simplify the process of unit conversion, making it accessible to users of all technical backgrounds.
 
-#### 3. History
-Users must be able to view a log of recent conversions with details (including calculation steps).
-The app should include a toggle for showing/hiding calculation steps.
-
-#### 4. Decimal Precision
-The user must be able to choose the number of decimals showed after the conversion.
-
-#### 5. String and calculation
-The user needs to be able to choose between seeing the calculation or not.
-
-### Non-Functional Requirements
-#### 1. Interface
-The app should have a clean and minimalistic interface.
-It should be compatible on different devices. (mobile, webb)
-
-#### 2. Performace
-The app should performe calculations quickly and work smootly.
-
-#### 3. Modularity
+## Key Features
+- **User-Centric Design**: An easy-to-use interface that appeals to users of all ages and technical backgrounds.
+- **Comprehensive Conversion Options**: Supports a wide range of unit conversions, including weight, speed, temperature, and more to come.
+- **Accuracy and Reliability**: Ensures precise and reliable conversions, backed by robust calculations and thorough testing.
+- **Accessibility**: Available on a range of devices through a responsive web design and optimized performance.
+- **Continuous Improvement**: Regular updates with new features, units, and improvements based on user feedback and technological advancements.
+- **Educational Value**: Provides detailed calculation steps and history logs to help users understand the conversion process.
 
 
 
-1. README.md for App (L3A)
-- Introduction: Provide an overview of the app, its purpose, and how it benefits the user (e.g., "The Unit Conversion App helps engineers quickly and accurately convert between various units of measurement...").
-- Installation: Include steps to set up and run the app locally.
-- Usage: Describe the user interface and how the user can perform conversions, adjust decimal precision, and toggle between modes (string and calculation).
-- Dependencies: Explain that the app relies on the conversion module (L2M).
-- Contribution Guidelines: Instructions on how other developers can contribute to the app.
 
-3. Reflection.md
-For Clean Code Reflections
-- Chapter 2 (Meaningful Names): Reflect on how you named your classes, methods, and variables to improve clarity and reduce ambiguity.
-- Chapter 3 (Functions): Discuss how you ensured that functions are small, do one thing, and have clear inputs/outputs.
-- Chapter 4 (Comments): Mention how you minimized comments by writing self-explanatory code. Highlight instances where comments were absolutely necessary.
-- Chapter 5 (Formatting): Describe how consistent formatting improved readability.
-- Chapters 6-11: Reflect on other relevant aspects like error handling, class design, and code testing. Use concrete examples from your code.
-4. Tests.... 
+## contributions
 
+1. Clone the repository:
+   ```bash
+   git clone git@github.com:Erikwink/L3.git
+   ```
+2. Create a new branch: Create a new branch for your feature or bug fix to keep your changes organized and separate from the main codebase.
+    ```bash
+    git checkout -b feature/your-feature-name
+    ```
+3. Develop: Make your changes or add new features. Ensure that your code follows the project's coding standards and best practices.
 
+4. Commit your changes: Write clear and concise commit messages that describe your changes.
+    ```bash
+    git add .
+    git commit -m "Add detailed description of your changes"
+    ```
+5. Push your branch to GitHub:
+    ```bash
+    git push origin feature/your-feature-name
+    ```
+6. Create a Pull Request: Go to the repository on GitHub and create a pull request from your branch to the main branch. Provide a detailed description of your changes and any relevant information for the reviewers.
 
-### web bundeler...
-```bash
-npm install --save-dev @babel/core @babel/preset-env
-npm install --save-dev babel-loader
-```
-.Babelrc
-```js 
-{
-  "presets": ["@babel/preset-env"]
-}
-```
-webpack.config.js
-```js 
-import { fileURLToPath } from 'url';
-import path from 'path';
+## License
+This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
 
-// Convert __dirname equivalent for ES modules
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-export default {
-  entry: './src/index.js',
-  output: {
-    filename: 'bundle.js',
-    path: path.resolve(__dirname, 'dist'),
-  },
-  module: {
-    rules: [
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',
-        },
-      },
-    ],
-  },
-};
-
-```
+## Testing 
+The module is tested using manual tests.
+See test page more info [Tests](./Test-report.md)

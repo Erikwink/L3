@@ -1,11 +1,9 @@
+/* eslint-disable */
 export class UiManager {
   initialize () {
     this.#cacheDOM()
   }
 
-  /**
-   *
-   */
   #cacheDOM () {
     this.fromSelect = document.getElementById('from-unit')
     this.toSelect = document.getElementById('to-unit')
@@ -24,36 +22,23 @@ export class UiManager {
     this.historyList = document.getElementById('history-list')
   }
 
-  /**
-   *
-   * @param unitMap
-   */
-  /* fillDropdowns (unitMap) {
+  fillDropdowns (unitMap) {
     for (const type in unitMap) {
+      const optgroup = this.#createOptgroupElement(type)
       unitMap[type].forEach(unit => {
-        const option1 = this.createOptionElement(unit, type)
-        const option2 = option1.cloneNode(true)
-        this.fromSelect.appendChild(option1)
-        this.toSelect.appendChild(option2)
+        const option = this.#createOptionElement(unit)
+        optgroup.appendChild(option)
       })
+      this.fromSelect.appendChild(optgroup.cloneNode(true))
+      this.toSelect.appendChild(optgroup)
     }
-  } */
-    fillDropdowns(unitMap) {
-      this.#clearSelectOptions(this.fromSelect);
-    this.#clearSelectOptions(this.toSelect);
-    
-      for (const type in unitMap) {
-        const optgroup = document.createElement('optgroup')
-        optgroup.label = type
-        unitMap[type].forEach(unit => {
-          const option = this.#createOptionElement(unit)
-          optgroup.appendChild(option)
-        })
-        this.fromSelect.appendChild(optgroup.cloneNode(true))
-        this.toSelect.appendChild(optgroup)
-      }
-    }
-    
+  }
+
+  #createOptgroupElement (type) {
+    const optgroup = document.createElement('optgroup')
+    optgroup.label = type
+    return optgroup
+  }
 
   #createOptionElement (unit) {
     const option = document.createElement('option')
@@ -62,41 +47,22 @@ export class UiManager {
     return option
   }
 
-  #clearSelectOptions(selectElement) {
-    while (selectElement.firstChild) {
-      selectElement.removeChild(selectElement.firstChild);
-    }
-  }
-
-  /**
-   *
-   */
   showHistoryPage () {
     this.sliderHeader.textContent = 'Previous Calculations'
     this.conversionForm.style.display = 'none'
     this.calculationHistory.style.display = 'block'
   }
 
-  /**
-   *
-   */
   showCalculationPage () {
     this.sliderHeader.textContent = 'Convert'
     this.conversionForm.style.display = 'block'
     this.calculationHistory.style.display = 'none'
   }
 
-  /**
-   *
-   * @param boolean
-   */
   updateCalculationBtnText (boolean) {
     this.calculationBtn.textContent = boolean ? 'Hide Calculation' : 'Show Calculation'
   }
 
-  /**
-   *
-   */
   getConversionInput () {
     return {
       value: parseFloat(this.valueInput.value),
@@ -106,12 +72,7 @@ export class UiManager {
     }
   }
 
-  /**
-   *
-   * @param calculations
-   */
   appendToHistoryList (calculations) {
-    /* const calculations = this.storageManager.getItems() */
     this.historyList.innerHTML = ''
     calculations.forEach(calc => {
       const li = document.createElement('li')
@@ -121,17 +82,10 @@ export class UiManager {
     })
   }
 
-  /**
-   *
-   */
   clearHistoryList () {
     this.historyList.textContent = ''
   }
 
-  /**
-   *
-   * @param result
-   */
   displayResult (result) {
     this.convertedValueDisplay.textContent = result
   }

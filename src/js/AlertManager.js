@@ -1,9 +1,6 @@
 import Swal from 'sweetalert2'
 /* eslint-disable */
 
-/**
- * Encapsulates alert functionality because its from 3 part library.
- */
 export class AlertManager {
 
   showError (errorMessage) {
@@ -27,7 +24,7 @@ export class AlertManager {
    * Wait for user to confirm clearing data.
    * @returns {Promise<boolean>} - Resolves to true if user confirms, false otherwise.
    */
-   async confirmClearData() {
+   async showConfirmClearData() {
     const result = await Swal.fire({
       title: 'Are you sure?',
       text: 'You will not be able to recover the data!',

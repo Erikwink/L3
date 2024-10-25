@@ -1,14 +1,15 @@
 import { Converter } from 'unit-converter'
-import { StorageManager } from './StorageManager.js'
+import { LocalStorageManager } from './LocalStorageManager.js'
 import { UiManager } from './UiManager.js'
 import { AlertManager } from './AlertManager.js'
+/* eslint-disable */
 
 export class Controller {
   showCalculation = false
 
   constructor () {
     this.alertManager = new AlertManager()
-    this.storageManager = new StorageManager('calculations_unit_converter')
+    this.localStorageManager = new LocalStorageManager('calculations_unit_converter')
     this.uiManager = new UiManager()
     this.converter = new Converter()
   }
@@ -20,13 +21,13 @@ export class Controller {
   }
 
   bindEvents () {
-    this.uiManager.sliderInput.addEventListener('change', this.toggleView.bind(this))
-    this.uiManager.calculationBtn.addEventListener('click', this.toggleCalculationVisibility.bind(this))
-    this.uiManager.convertBtn.addEventListener('click', this.handleConvert.bind(this))
-    this.uiManager.clearHistoryBtn.addEventListener('click', this.handleClearHistory.bind(this))
+    this.uiManager.sliderInput.addEventListener('change', () => this.switchView())
+    this.uiManager.calculationBtn.addEventListener('click', () => this.toggleCalculationVisibility())
+    this.uiManager.convertBtn.addEventListener('click', () => this.handleConvert())
+    this.uiManager.clearHistoryBtn.addEventListener('click', () => this.handleClearHistory())
   }
 
-  toggleView () {
+  switchView () {
     if (this.uiManager.sliderInput.checked) {
       this.showHistoryPage()
     } else {
@@ -35,7 +36,7 @@ export class Controller {
   }
 
   showHistoryPage () {
-    const items = this.storageManager.getItems()
+    const items = this.localStorageManager.getItems()
     this.uiManager.appendToHistoryList(items)
     this.uiManager.showHistoryPage()
   }
@@ -49,16 +50,13 @@ export class Controller {
     this.uiManager.updateCalculationBtnText(this.showCalculation)
   }
 
-  
-
-  /**
-   *
-   */
   handleConvert () {
     const { value, fromUnit, toUnit, decimals } = this.uiManager.getConversionInput()
 
     try {
-      this.#performConversion(value, fromUnit, toUnit, decimals)
+      const { result, calculation } = this.#performConversion(value, fromUnit, toUnit, decimals)
+      this.uiManager.displayResult(result)
+      this.localStorageManager.save(calculation)
     } catch (error) {
       this.alertManager.showError(error.message)
     }
@@ -73,19 +71,18 @@ export class Controller {
       ? calculation
       : this.converter.convertToString(fromUnit, toUnit)
 
-    this.uiManager.displayResult(result)
-    this.storageManager.save(calculation)
+      return {result, calculation}
   }
 
   async handleClearHistory () {
     try {
-      if (!this.storageManager.hasItems()) {
+      if (!this.localStorageManager.hasItems()) {
         this.alertManager.showNoDataToClear()
         return
       }
-      if (await this.alertManager.confirmClearData()) {
+      if (await this.alertManager.showConfirmClearData()) {
         this.uiManager.clearHistoryList()
-        this.storageManager.clearLocalStorage()
+        this.localStorageManager.clearLocalStorage()
       }
     } catch (error) {
       this.alertManager.showError(error.message)
