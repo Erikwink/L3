@@ -27,7 +27,3 @@ The app should performe calculations quickly and work smootly.
 
 #### 3. Modularity
 The app should be based on several modules working together working with high coupleing and low cohesion.
-
-#### implement.
-show calculations on already converted value? 
-delete single calculation from history.

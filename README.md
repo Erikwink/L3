@@ -20,7 +20,7 @@ Our vision is to empower users globally by providing a user-friendly, accessible
 
 
 
-## contributions
+## Contributions
 
 1. Clone the repository:
    ```bash
@@ -42,6 +42,13 @@ Our vision is to empower users globally by providing a user-friendly, accessible
     git push origin feature/your-feature-name
     ```
 6. Create a Pull Request: Go to the repository on GitHub and create a pull request from your branch to the main branch. Provide a detailed description of your changes and any relevant information for the reviewers.
+
+## Upcomming features
+
+### Display calculations
+Right now if you switch between show and hide calculation you will have to convert the value once again. In the next update this will be fixed to skip having to perform the calculation twice to display the calulated value or not
+### Delete single calculation
+The functionallity to remove a single calculation from the history.
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.

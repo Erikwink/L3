@@ -1,6 +1,6 @@
 # Test-report
 
-## Test cases
+## Test specification
 ### 1 Convert Units
   - Steps:
     1. Fill all the fields on the main page (Value, From, To, Decimals)
@@ -57,6 +57,18 @@
     2. Do a conversion
   - Expected Result:
     - The displayed result doesn´t contain a calculation
-- 
-  - Steps:
-  - Expected Result:
+
+## Test Summary Report
+
+| Test Case                          | Status  |
+|------------------------------------|---------|
+| **Convert Units**                  | ✔️       |
+| **Convert different types of units** | ✔️       |
+| **Convert without value**          | ✔️       |
+| **Convert same unit**              | ✔️       |
+| **Show history**                   | ✔️       |
+| **Clear history**                  | ✔️       |
+| **No history to clear**            | ✔️       |
+| **Show calculations**              | ✔️       |
+| **Hide calculations**              | ✔️       |
+

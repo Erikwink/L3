@@ -14,7 +14,7 @@ In my L2 module i renamed checkDecimals to adjustDecimals to make the name more 
 Naming takes a lot of time, but i think that following the pricniples of the book makes the code a lot easier to read, i´ve been using chapter 2 as a guideline whenever i name a function.
 ## Chapter 3
 I feel like "Small functions" and "Do one thing" really creates oppertunities for "Descriptive Names" and increasing readability. During this project i've refactored almost every single line of code. From a working code in one class to several classes working together.
-Breaking out funktionallity to several classes has helpt with "Avoiding side effetcs" for example LocalStorageManager only performes operations to and from local storage. 
+Breaking out functionallity to several classes has helpt with "Avoiding side effetcs" for example LocalStorageManager only performes operations to and from local storage. 
 Examples from code: 
 ```JS
 // Does one thing, clear from the name what it does, small function
@@ -43,7 +43,7 @@ Other than that i feel like my code is pretty "Self explanatory", maybe because 
 ## Chapter 5
 Some of the points made in chapter 5 seems pretty straight forward, like intendation, instance variables and vertical openess. I feel like thats the way we been taught to program. The instance variables should be at the top of the class (for java and JS) but for some other language that might differ which is good to keep in mind.
 Vertical density is one of the changes i made on my L2 module. I removed all the comments and let the nameing speak for itself which made the code more readable.
-In the book Martin empasises variable declaration to be "as close to their usage as possible"(page 80), when ive been programming in java checkstyle has complained about this which has been a bit of a pain in the ass. But i can see the positive effect on readability after reading the book. I also think that makeing methods "Do one thing" and keeping them small makes the variable declaration automatically appear close to its use. 
+In the book Martin empasises variable declaration to be "as close to their usage as possible"(page 80), when ive been programming in java, checkstyle has complained about this which has been a bit of a pain in the ass. But i can see the positive effect on readability after reading the book. I also think that makeing methods "Do one thing" and keeping them small makes the variable declaration automatically appear close to its use. 
 As stated in the Newspaper Metaphore: "If the
 newspaper were just one long story containing a disorganized agglomeration of facts,
 dates, and names, then we simply would not read it"(page 78). This quote makes a lot of sense. After reading the book i moved my methods to follow Dependant functions and vertical ordering. I feel like it helps with reading the code more like a newspaper.
@@ -80,7 +80,7 @@ bindEvents () {
   }
   ```
 ## Chapter 6
-Moving functionallity to differnet classes makes "Encapsulation" easier to practise.
+Moving functionallity to differet classes makes "Encapsulation" easier to practise.
 ```js
 getConversionInput () {
     return {
@@ -136,16 +136,17 @@ The tests in my app are manual. And according to chapter 9 i´ve tried to keep t
   - Expected Result:
    - Error message is displayed "Cannot convert between ton and kt"
 
-In my L2 module i used automated tests with jest. When writing the tests i tried to follow the "F.I.R.S.T. Principles". 
-The tests are "Fast" as seen in the report. No expensive or big calculations are made.
-The tests are "Independent". Every test provides all the information needed by itself to not rely on the state of earlier test.
-The tests are "Repeatable" Conversions made with the same numbers will output the same result every time.
-The tests are "Self validating" they either pass or fail. No need for the tester to manually interpret the result.
-The tests arent really written "Timley" as the book suggests. i wrote them after the first release but before the seccond. But the tests are based on my previous manual tests. Hopefully we will learn more about testing in the next course. 
+In my L2 module i used automated tests with jest. When writing the tests i tried to follow the "F.I.R.S.T. Principles".<br> 
+The tests are "Fast" as seen in the report. No expensive or big calculations are made.<br>
+The tests are "Independent". Every test provides all the information needed by itself to not rely on the state of earlier test.<br>
+The tests are "Repeatable" Conversions made with the same numbers will output the same result every time.<br>
+The tests are "Self validating" they either pass or fail. No need for the tester to manually interpret the result.<br>
+The tests arent really written "Timley" as the book suggests. i wrote them after the first release but before the seccond. But the tests are based on my previous manual tests. Hopefully we will learn more about testing in the next course. <br>
 ![Automated Tests](./img/tests-for-l2.png)
+<br>
 ## Chapter 10
-By breaking out my code into several classes i was able to achieve some of the principes from chapter 10. The AlertManager follows the "Single Responsibility Principle". It manages the alerts of the app.
-"Classes should have a small number of instance variables. Each of the methods of a class should manipulate one or more of those variables." (page 140)
+By breaking out my code into several classes i was able to achieve some of the principes from chapter 10. The AlertManager follows the "Single Responsibility Principle". It manages the alerts of the app.<br>
+"Classes should have a small number of instance variables. Each of the methods of a class should manipulate one or more of those variables." (page 140)<br>
 In my LocalStorageManager almost every method is using the instance variale, and they all perform operations related to or from local storage. This provides a high "Cohesion" for the class.
 After reading the book i understand that the smaller the class the better, which i´ve found to be harder in some cases such as in the controller class which has a lot of responsibilities. 
 
